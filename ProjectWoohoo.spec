@@ -2,6 +2,16 @@
 import sys
 from PyInstaller.utils.hooks import collect_all
 
+# Create a runtime hook to suppress pkg_resources warnings
+runtime_hook = '''
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="pkg_resources")
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+'''
+
+with open('suppress_warnings.py', 'w') as f:
+    f.write(runtime_hook)
+
 block_cipher = None
 
 # Collect all necessary data and binaries
@@ -16,6 +26,7 @@ hiddenimports = [
     'soundfile',
     'setuptools',
     'pkg_resources.py2_warn',
+    'PyPDF2',  # Add PDF support
 ]
 
 # Add additional data files
@@ -33,7 +44,7 @@ a = Analysis(
     hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
-    runtime_hooks=[],
+    runtime_hooks=['suppress_warnings.py'],  # Add our warning suppression
     excludes=['_tkinter', 'Tkinter', 'tkinter'],  # Exclude unnecessary packages
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
