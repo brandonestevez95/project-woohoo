@@ -1,0 +1,15 @@
+{
+  "id": "66d2c198-b5a2-4c3c-bd81-196294643e2a",
+  "name": "uh",
+  "interests": [
+    "Machine Learning",
+    "Software Engineering"
+  ],
+  "learning_arcs": [
+    "ai_basics"
+  ],
+  "language": "en",
+  "voice_preference": "enthusiastic",
+  "created_at": "2025-06-01",
+  "episodes": []
+}
