@@ -16,7 +16,7 @@ class OnboardingFlow:
             st.session_state.onboarding_step = 1
             
         # Show progress
-        st.progress(st.session_state.onboarding_step / 3)
+        st.progress(st.session_state.onboarding_step / 2)
         
         if st.session_state.onboarding_step == 1:
             completed, name = self._show_welcome()
@@ -26,35 +26,21 @@ class OnboardingFlow:
                 st.rerun()
         
         elif st.session_state.onboarding_step == 2:
-            completed, (interests, arcs) = self._show_interests()
+            completed, interests = self._show_interests()
             if completed:
-                st.session_state.interests = interests
-                st.session_state.learning_arcs = arcs
-                st.session_state.onboarding_step = 3
-                st.rerun()
-        
-        elif st.session_state.onboarding_step == 3:
-            completed, (language, voice) = self._show_preferences()
-            if completed:
-                # Create profile
+                # Create profile with default settings
                 profile_id = self.profile_manager.create_profile(
                     name=st.session_state.name,
-                    interests=st.session_state.interests,
-                    learning_arcs=st.session_state.learning_arcs,
-                    language=language,
-                    voice_preference=voice
+                    interests=interests,
+                    learning_arcs=["ai_basics"],  # Default to AI basics
+                    language="en",
+                    voice_preference="enthusiastic"
                 )
                 
                 if profile_id:
-                    st.success("Profile created successfully! Redirecting to main interface...")
-                    # Clean up ALL onboarding state
-                    keys_to_remove = [
-                        "onboarding_step",
-                        "name",
-                        "interests",
-                        "learning_arcs"
-                    ]
-                    for key in keys_to_remove:
+                    st.success("Profile created! Let's create your first episode...")
+                    # Clean up onboarding state
+                    for key in ["onboarding_step", "name"]:
                         if key in st.session_state:
                             del st.session_state[key]
                     return profile_id
@@ -65,73 +51,34 @@ class OnboardingFlow:
     
     def _show_welcome(self) -> Tuple[bool, str]:
         """Show welcome screen and get name."""
-        st.write("""
-        Welcome to Project Woohoo, your AI-powered podcast generator! 🎙️
+        st.markdown("""
+        ### Transform Your Learning with AI-Powered Podcasts! 🚀
         
-        Let's get you set up with a personalized learning experience. This will only take a few minutes.
+        Project Woohoo turns any text into engaging podcast episodes, 
+        helping you learn while you listen. Perfect for articles, 
+        documents, or any content you want to digest on the go.
         """)
         
-        name = st.text_input("What should we call you?", 
-            placeholder="Enter your name")
+        name = st.text_input(
+            "What's your name?",
+            placeholder="Enter your name to get started"
+        )
         
-        if st.button("Continue", type="primary", disabled=not name):
+        if st.button("Continue →", type="primary", disabled=not name):
             return True, name
         return False, ""
     
-    def _show_interests(self) -> Tuple[bool, Tuple[list, list]]:
-        """Show interests and learning paths selection."""
-        st.subheader("Choose Your Interests & Learning Paths")
+    def _show_interests(self) -> Tuple[bool, list]:
+        """Show interests selection."""
+        st.subheader("What interests you? 🤔")
+        st.write("Choose at least 2 topics that excite you:")
         
-        # Select interests
         interests = st.multiselect(
-            "Select your interests (choose at least 2)",
+            "Your Interests",
             options=self.profile_manager.available_interests,
-            help="These topics will help us personalize your podcast content"
+            help="These will help us personalize your learning experience"
         )
         
-        st.write("---")
-        
-        # Select learning paths
-        st.write("Choose at least one learning path:")
-        arcs = []
-        for arc in self.profile_manager.available_learning_arcs:
-            col1, col2 = st.columns([1, 3])
-            with col1:
-                if st.checkbox(arc["name"], key=f"arc_{arc['id']}"):
-                    arcs.append(arc["id"])
-            with col2:
-                st.write(f"*{arc['description']}*")
-                st.write(f"Difficulty: {arc['difficulty']}")
-        
-        if st.button("Continue", type="primary", disabled=not (len(interests) >= 2 and len(arcs) >= 1)):
-            return True, (interests, arcs)
-        return False, ([], [])
-    
-    def _show_preferences(self) -> Tuple[bool, Tuple[str, str]]:
-        """Show language and voice preferences."""
-        st.subheader("Almost Done!")
-        
-        language = st.selectbox(
-            "Preferred Language",
-            options=[
-                ("en", "English"),
-                ("es", "Spanish"),
-                ("fr", "French"),
-                ("de", "German")
-            ],
-            format_func=lambda x: x[1]
-        )[0]
-        
-        voice = st.selectbox(
-            "Voice Style",
-            options=[
-                "default",
-                "casual",
-                "professional",
-                "enthusiastic"
-            ]
-        )
-        
-        if st.button("Complete Setup", type="primary"):
-            return True, (language, voice)
-        return False, ("en", "default") 
+        if st.button("Start Learning →", type="primary", disabled=len(interests) < 2):
+            return True, interests
+        return False, [] 

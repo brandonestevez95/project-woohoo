@@ -1,0 +1,15 @@
+{
+  "id": "dd725c69-1a76-451d-9db2-8cc5c6255df5",
+  "name": "brandon",
+  "interests": [
+    "Machine Learning",
+    "Computer Science"
+  ],
+  "learning_arcs": [
+    "ai_basics"
+  ],
+  "language": "en",
+  "voice_preference": "enthusiastic",
+  "created_at": "2025-06-01",
+  "episodes": []
+}
