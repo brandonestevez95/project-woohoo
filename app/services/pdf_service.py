@@ -1,48 +1,40 @@
-from PyPDF2 import PdfReader
-from typing import List, Optional
-import os
+import PyPDF2
 from pathlib import Path
+from typing import Dict, Optional
 
 class PDFService:
-    def __init__(self, upload_dir: str = "uploads"):
-        """Initialize PDF service with upload directory."""
-        self.upload_dir = Path(upload_dir)
-        self.upload_dir.mkdir(exist_ok=True)
+    def __init__(self):
+        """Initialize the PDF service."""
+        pass
         
-    def save_uploaded_file(self, uploaded_file) -> str:
-        """Save an uploaded file and return its path."""
-        file_path = self.upload_dir / uploaded_file.name
-        with open(file_path, "wb") as f:
-            f.write(uploaded_file.getbuffer())
-        return str(file_path)
-    
     def extract_text(self, file_path: str) -> str:
         """Extract text from a PDF file."""
-        try:
-            reader = PdfReader(file_path)
-            text = ""
+        text = []
+        with open(file_path, 'rb') as file:
+            reader = PyPDF2.PdfReader(file)
             for page in reader.pages:
-                text += page.extract_text() + "\n"
-            return text
-        except Exception as e:
-            print(f"Error extracting text from PDF: {e}")
-            return ""
-    
-    def get_metadata(self, file_path: str) -> dict:
-        """Get metadata from a PDF file."""
-        try:
-            reader = PdfReader(file_path)
-            return {
-                "title": reader.metadata.get("/Title", "Unknown"),
-                "author": reader.metadata.get("/Author", "Unknown"),
-                "subject": reader.metadata.get("/Subject", ""),
-                "keywords": reader.metadata.get("/Keywords", ""),
-                "creator": reader.metadata.get("/Creator", ""),
-                "producer": reader.metadata.get("/Producer", ""),
-                "creation_date": reader.metadata.get("/CreationDate", ""),
-                "modification_date": reader.metadata.get("/ModDate", ""),
-                "pages": len(reader.pages)
+                text.append(page.extract_text())
+        return "\n\n".join(text)
+        
+    def get_metadata(self, file_path: str) -> Dict:
+        """Extract metadata from a PDF file."""
+        with open(file_path, 'rb') as file:
+            reader = PyPDF2.PdfReader(file)
+            metadata = reader.metadata
+            
+            # Clean up metadata
+            clean_metadata = {
+                'title': metadata.get('/Title', '').strip() if metadata.get('/Title') else None,
+                'author': metadata.get('/Author', '').strip() if metadata.get('/Author') else None,
+                'subject': metadata.get('/Subject', '').strip() if metadata.get('/Subject') else None,
+                'keywords': metadata.get('/Keywords', '').strip() if metadata.get('/Keywords') else None,
+                'creator': metadata.get('/Creator', '').strip() if metadata.get('/Creator') else None,
+                'producer': metadata.get('/Producer', '').strip() if metadata.get('/Producer') else None,
+                'pages': len(reader.pages)
             }
-        except Exception as e:
-            print(f"Error getting PDF metadata: {e}")
-            return {} 
+            
+            # Use filename as title if no title in metadata
+            if not clean_metadata['title']:
+                clean_metadata['title'] = Path(file_path).stem
+                
+            return clean_metadata 

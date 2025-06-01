@@ -7,7 +7,34 @@ class ZoteroService:
         """Initialize Zotero service with library ID and optional API key."""
         self.library_id = library_id
         self.api_key = api_key or os.getenv("ZOTERO_API_KEY")
+        if not self.library_id or not self.api_key:
+            raise ValueError("Both library_id and api_key are required")
         self.zot = zotero.Zotero(library_id, "group" if "/" in library_id else "user", self.api_key)
+    
+    def test_connection(self) -> bool:
+        """Test the Zotero connection by attempting to fetch a single item."""
+        try:
+            self.zot.top(limit=1)
+            return True
+        except Exception as e:
+            print(f"Zotero connection test failed: {e}")
+            return False
+    
+    def get_collections(self) -> List[Dict]:
+        """Fetch collections from the Zotero library."""
+        try:
+            return self.zot.collections()
+        except Exception as e:
+            print(f"Error fetching Zotero collections: {e}")
+            return []
+    
+    def get_items_in_collection(self, collection_key: str) -> List[Dict]:
+        """Fetch items from a specific collection."""
+        try:
+            return self.zot.collection_items(collection_key)
+        except Exception as e:
+            print(f"Error fetching collection items: {e}")
+            return []
     
     def get_items(self, limit: int = 50) -> List[Dict]:
         """Fetch items from the Zotero library."""

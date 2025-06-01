@@ -1,0 +1,19 @@
+{
+  "id": "1748751682",
+  "name": "Be",
+  "interests": [
+    "Artificial Intelligence",
+    "Scientific Research"
+  ],
+  "learning_arcs": [
+    "stem"
+  ],
+  "language": "en",
+  "voice_preference": "default",
+  "completed_episodes": [],
+  "progress": {
+    "stem": 0
+  },
+  "created_at": 1748751682.915136,
+  "last_updated": 1748751682.915136
+}

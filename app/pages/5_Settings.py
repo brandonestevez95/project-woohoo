@@ -1,6 +1,7 @@
 import streamlit as st
 import json
-from utils.profile_manager import ProfileManager
+from app.utils.profile_manager import ProfileManager
+from datetime import datetime
 
 def show_settings():
     st.title("Settings ⚙️")
@@ -16,19 +17,60 @@ def show_settings():
         st.error("Could not load profile. Please try logging in again.")
         return
     
-    # Profile card
+    # Ensure profile has required fields
+    profile.setdefault("name", "Guest")
+    profile.setdefault("interests", [])
+    profile.setdefault("learning_arcs", [])
+    profile.setdefault("language", "en")
+    profile.setdefault("voice_preference", "default")
+    profile.setdefault("created_at", datetime.now().strftime("%Y-%m-%d"))
+    
+    # Profile card with custom CSS
     st.markdown("""
-        <div class="profile-header" style="margin-bottom: 2rem;">
+        <style>
+        .profile-header {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: #f0f2f6;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            background: #2E86C1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-right: 1rem;
+        }
+        .profile-info {
+            flex-grow: 1;
+        }
+        .profile-info h2 {
+            margin: 0;
+            color: #1f1f1f;
+        }
+        .profile-info p {
+            margin: 0;
+            color: #666;
+        }
+        </style>
+        <div class="profile-header">
             <div class="profile-avatar">{}</div>
-            <div>
+            <div class="profile-info">
                 <h2>{}</h2>
                 <p>Member since {}</p>
             </div>
         </div>
     """.format(
-        profile["name"][0].upper(),
+        profile["name"][0].upper() if profile["name"] else "?",
         profile["name"],
-        "today"  # TODO: Format date
+        profile["created_at"]
     ), unsafe_allow_html=True)
     
     # Profile Settings
@@ -175,8 +217,8 @@ def show_settings():
                 </div>
             """.format(
                 profile["id"],
-                "today",  # TODO: Format date
-                "today"  # TODO: Format date
+                profile["created_at"],
+                datetime.now().strftime("%Y-%m-%d")
             ), unsafe_allow_html=True)
         
         with col2:

@@ -1,6 +1,6 @@
 import streamlit as st
 from typing import Optional, Tuple
-from ..utils.profile_manager import ProfileManager
+from app.utils.profile_manager import ProfileManager
 
 class OnboardingFlow:
     def __init__(self):
@@ -16,132 +16,112 @@ class OnboardingFlow:
             st.session_state.onboarding_step = 1
             
         # Show progress
-        st.progress(st.session_state.onboarding_step / 4)
+        st.progress(st.session_state.onboarding_step / 3)
         
         if st.session_state.onboarding_step == 1:
-            completed = self._show_welcome()
+            completed, name = self._show_welcome()
             if completed:
+                st.session_state.name = name
                 st.session_state.onboarding_step = 2
                 st.rerun()
-                
+        
         elif st.session_state.onboarding_step == 2:
-            completed, profile_name = self._show_profile_setup()
-            if completed:
-                st.session_state.profile_name = profile_name
-                st.session_state.onboarding_step = 3
-                st.rerun()
-                
-        elif st.session_state.onboarding_step == 3:
             completed, (interests, arcs) = self._show_interests()
             if completed:
                 st.session_state.interests = interests
                 st.session_state.learning_arcs = arcs
-                st.session_state.onboarding_step = 4
+                st.session_state.onboarding_step = 3
                 st.rerun()
-                
-        elif st.session_state.onboarding_step == 4:
+        
+        elif st.session_state.onboarding_step == 3:
             completed, (language, voice) = self._show_preferences()
             if completed:
                 # Create profile
                 profile_id = self.profile_manager.create_profile(
-                    name=st.session_state.profile_name,
+                    name=st.session_state.name,
                     interests=st.session_state.interests,
                     learning_arcs=st.session_state.learning_arcs,
                     language=language,
                     voice_preference=voice
                 )
                 
-                # Clear onboarding state
-                for key in ["onboarding_step", "profile_name", "interests", "learning_arcs"]:
-                    if key in st.session_state:
-                        del st.session_state[key]
-                        
-                return profile_id
-                
+                if profile_id:
+                    st.success("Profile created successfully! Redirecting to main interface...")
+                    # Clean up ALL onboarding state
+                    keys_to_remove = [
+                        "onboarding_step",
+                        "name",
+                        "interests",
+                        "learning_arcs"
+                    ]
+                    for key in keys_to_remove:
+                        if key in st.session_state:
+                            del st.session_state[key]
+                    return profile_id
+                else:
+                    st.error("Failed to create profile. Please try again.")
+        
         return None
     
-    def _show_welcome(self) -> bool:
-        """Show welcome screen."""
-        st.header("Transform Your Learning Journey")
+    def _show_welcome(self) -> Tuple[bool, str]:
+        """Show welcome screen and get name."""
         st.write("""
-        Project Woohoo turns academic content into engaging podcast episodes,
-        helping you learn more effectively through audio content.
+        Welcome to Project Woohoo, your AI-powered podcast generator! 🎙️
         
-        Features:
-        - 🎓 Personalized learning paths
-        - 🎙️ AI-powered podcast generation
-        - 📚 Integration with academic sources
-        - 🌟 Track your progress
+        Let's get you set up with a personalized learning experience. This will only take a few minutes.
         """)
         
-        return st.button("Get Started →")
-    
-    def _show_profile_setup(self) -> Tuple[bool, str]:
-        """Show profile setup screen."""
-        st.header("Create Your Profile")
+        name = st.text_input("What should we call you?", 
+            placeholder="Enter your name")
         
-        name = st.text_input("What should we call you?")
-        if not name:
-            st.info("Please enter your name to continue")
-            return False, ""
-            
-        return st.button("Continue →"), name
+        if st.button("Continue", type="primary", disabled=not name):
+            return True, name
+        return False, ""
     
     def _show_interests(self) -> Tuple[bool, Tuple[list, list]]:
-        """Show interests and learning arcs selection."""
-        st.header("Customize Your Experience")
+        """Show interests and learning paths selection."""
+        st.subheader("Choose Your Interests & Learning Paths")
         
         # Select interests
-        st.subheader("What topics interest you?")
         interests = st.multiselect(
-            "Select your interests",
+            "Select your interests (choose at least 2)",
             options=self.profile_manager.available_interests,
-            default=["Academic Research", "Technology Trends"]
+            help="These topics will help us personalize your podcast content"
         )
         
-        # Select learning arcs
-        st.subheader("Choose Your Learning Paths")
-        st.write("Learning paths help organize your podcast episodes into coherent educational journeys.")
+        st.write("---")
         
-        selected_arcs = []
+        # Select learning paths
+        st.write("Choose at least one learning path:")
+        arcs = []
         for arc in self.profile_manager.available_learning_arcs:
             col1, col2 = st.columns([1, 3])
             with col1:
                 if st.checkbox(arc["name"], key=f"arc_{arc['id']}"):
-                    selected_arcs.append(arc["id"])
+                    arcs.append(arc["id"])
             with col2:
                 st.write(f"*{arc['description']}*")
-                st.write(", ".join(arc["topics"]))
+                st.write(f"Difficulty: {arc['difficulty']}")
         
-        if not interests or not selected_arcs:
-            st.info("Please select at least one interest and learning path")
-            return False, ([], [])
-            
-        return st.button("Continue →"), (interests, selected_arcs)
+        if st.button("Continue", type="primary", disabled=not (len(interests) >= 2 and len(arcs) >= 1)):
+            return True, (interests, arcs)
+        return False, ([], [])
     
     def _show_preferences(self) -> Tuple[bool, Tuple[str, str]]:
         """Show language and voice preferences."""
-        st.header("Set Your Preferences")
+        st.subheader("Almost Done!")
         
-        # Language selection
         language = st.selectbox(
             "Preferred Language",
             options=[
                 ("en", "English"),
                 ("es", "Spanish"),
                 ("fr", "French"),
-                ("de", "German"),
-                ("it", "Italian"),
-                ("pt", "Portuguese"),
-                ("ru", "Russian"),
-                ("ja", "Japanese"),
-                ("ko", "Korean"),
-                ("zh", "Chinese")
+                ("de", "German")
             ],
             format_func=lambda x: x[1]
         )[0]
         
-        # Voice preference
         voice = st.selectbox(
             "Voice Style",
             options=[
@@ -152,9 +132,6 @@ class OnboardingFlow:
             ]
         )
         
-        completed = st.button("Complete Setup →")
-        if completed:
-            st.balloons()
-            st.success("Profile created successfully!")
-            
-        return completed, (language, voice) 
+        if st.button("Complete Setup", type="primary"):
+            return True, (language, voice)
+        return False, ("en", "default") 

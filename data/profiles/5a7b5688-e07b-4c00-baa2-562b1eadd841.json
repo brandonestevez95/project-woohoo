@@ -1,0 +1,18 @@
+{
+  "id": "5a7b5688-e07b-4c00-baa2-562b1eadd841",
+  "name": "c",
+  "interests": [
+    "Machine Learning",
+    "Natural Language Processing"
+  ],
+  "learning_arcs": [
+    "ai_basics"
+  ],
+  "language": "en",
+  "voice_preference": "default",
+  "created_at": "2025-06-01",
+  "completed_episodes": [],
+  "progress": {
+    "ai_basics": 0
+  }
+}

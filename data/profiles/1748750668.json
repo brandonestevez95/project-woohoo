@@ -1,0 +1,27 @@
+{
+  "id": "1748750668",
+  "name": "Brnadon",
+  "interests": [
+    "Artificial Intelligence",
+    "Digital Culture",
+    "Social Impact",
+    "Innovation & Entrepreneurship",
+    "Smart Cities",
+    "Technology Ethics",
+    "Data Science",
+    "Urban Development"
+  ],
+  "learning_arcs": [
+    "stem",
+    "future"
+  ],
+  "language": "en",
+  "voice_preference": "professional",
+  "completed_episodes": [],
+  "progress": {
+    "stem": 0,
+    "future": 0
+  },
+  "created_at": 1748750668.2816598,
+  "last_updated": 1748750668.2816598
+}

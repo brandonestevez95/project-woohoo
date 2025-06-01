@@ -1,0 +1,18 @@
+{
+  "id": "18f649cf-bce8-45e9-8971-b310f0c05059",
+  "name": "B",
+  "interests": [
+    "Data Science",
+    "Computer Science"
+  ],
+  "learning_arcs": [
+    "ai_basics"
+  ],
+  "language": "en",
+  "voice_preference": "default",
+  "created_at": "2025-06-01",
+  "completed_episodes": [],
+  "progress": {
+    "ai_basics": 0
+  }
+}
