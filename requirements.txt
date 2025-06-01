@@ -1,0 +1,16 @@
+streamlit>=1.32.0
+python-dotenv>=1.0.0
+pyzotero>=1.5.18
+feedparser>=6.0.10
+pandas>=2.2.0
+numpy>=1.26.0
+python-magic>=0.4.27
+bibtexparser>=1.4.1
+pydantic>=2.6.0
+tqdm>=4.66.0
+requests>=2.31.0
+ollama>=0.1.6
+transformers>=4.38.0
+torch>=2.2.0
+TTS>=0.22.0
+soundfile>=0.12.1 
