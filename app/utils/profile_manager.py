@@ -13,16 +13,71 @@ class ProfileManager:
         
         self.profiles = {}
         self._interests = [
+            # Technology & Computing
             "Artificial Intelligence",
             "Machine Learning",
             "Data Science",
             "Computer Science",
             "Software Engineering",
-            "Natural Language Processing",
             "Cloud Computing",
             "Web Development",
             "Mobile Development",
-            "DevOps"
+            "DevOps",
+            "Cybersecurity",
+            
+            # Science & Mathematics
+            "Mathematics",
+            "Physics",
+            "Chemistry",
+            "Biology",
+            "Environmental Science",
+            "Astronomy",
+            "Statistics",
+            
+            # Arts & Humanities
+            "Art History",
+            "Literature",
+            "Philosophy",
+            "Music",
+            "Film Studies",
+            "Theater",
+            "Creative Writing",
+            
+            # Design & Architecture
+            "Graphic Design",
+            "Industrial Design",
+            "Architecture",
+            "Urban Planning",
+            "Interior Design",
+            "UX/UI Design",
+            
+            # Business & Economics
+            "Economics",
+            "Business Management",
+            "Marketing",
+            "Finance",
+            "Entrepreneurship",
+            
+            # Social Sciences
+            "Psychology",
+            "Sociology",
+            "Anthropology",
+            "Political Science",
+            "Education",
+            
+            # Agriculture & Environment
+            "Agricultural Science",
+            "Sustainable Agriculture",
+            "Environmental Studies",
+            "Horticulture",
+            "Food Science",
+            
+            # Health & Medicine
+            "Medicine",
+            "Public Health",
+            "Nutrition",
+            "Mental Health",
+            "Sports Science"
         ]
 
     def create_profile(

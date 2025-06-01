@@ -1,16 +1,16 @@
 [theme]
-primaryColor = "#FF4B4B"  # Vibrant red for primary actions
+primaryColor = "#22C55E"  # Lime green for action buttons (Duolingo-inspired)
 backgroundColor = "#FFFFFF"  # Clean white background
-secondaryBackgroundColor = "#F0F2F6"  # Light gray for cards/sections
-textColor = "#262730"  # Dark gray for text
-font = "sans serif"  # Modern, clean font
+secondaryBackgroundColor = "#F9FAFB"  # Soft off-white for cards
+textColor = "#1F2937"  # Cool dark blue-gray
+font = "sans serif"  # Keep modern and friendly
 
 [browser]
-gatherUsageStats = false  # Disable usage statistics
+gatherUsageStats = false
 
 [server]
 enableCORS = false
 enableXsrfProtection = false
 
 [logger]
-level = "error" 
+level = "error"

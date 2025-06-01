@@ -1,107 +1,97 @@
 # Project Woohoo 🎙️
 
-An AI-powered tool that transforms academic sources into engaging podcast episodes, using completely free and open-source technologies.
+Transform any text into engaging podcast episodes! Project Woohoo uses AI to convert academic papers, articles, and documents into easy-to-listen podcast content.
 
 ## Features
 
-- 📚 Import sources from:
-  - Zotero libraries
-  - PDF documents
-  - Bibliography files (.bib, .csv)
-- 🤖 Generate cohesive podcast scripts using Claude (via Ollama)
-- 🎧 Convert scripts to audio using Google Text-to-Speech (gTTS)
-- 🌟 Filter, favorite, and manage your episode library
-- 📝 Export transcripts and audio files
-- 🌐 Everything runs locally - no API keys needed!
-- 📱 Web and desktop versions available
+- 🔍 **Smart PDF Processing**: Automatically extracts and structures content from academic papers
+- 🎯 **Interest-Based Learning**: Choose from 50+ topics across technology, science, arts, and more
+- 🤖 **AI Transformation**: Converts academic text into engaging podcast-style narration
+- 🎧 **Audio Generation**: (Coming Soon) High-quality text-to-speech conversion
+- 📱 **Interactive Player**: (Coming Soon) Easy-to-use episode player with progress tracking
 
-## Prerequisites
+## Getting Started
 
-1. Install [Ollama](https://ollama.ai/) for local LLM support
-2. Pull the Claude model:
+1. Clone the repository:
 ```bash
-ollama pull claude
+git clone https://github.com/yourusername/operation-woohoo.git
+cd operation-woohoo
 ```
 
-## Setup
-
-1. Clone this repository
 2. Create and activate a virtual environment:
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Unix/Mac
-# or
-venv\Scripts\activate     # On Windows
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
+
 3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-4. For better performance on macOS:
+
+4. Run the application:
 ```bash
-xcode-select --install
-pip install watchdog
+python -m streamlit run app/main.py
 ```
-
-## Usage
-
-### Web Version
-Run the Streamlit app:
-```bash
-streamlit run app/main.py
-```
-
-### Desktop Version
-Launch the standalone application:
-```bash
-./dist/ProjectWoohoo/ProjectWoohoo  # On Unix/Mac
-# or
-dist\ProjectWoohoo\ProjectWoohoo.exe  # On Windows
-```
-
-### Supported Languages
-- English (en)
-- Spanish (es)
-- French (fr)
-- German (de)
-- Italian (it)
-- Portuguese (pt)
-- Russian (ru)
-- Japanese (ja)
-- Korean (ko)
-- Chinese (zh)
 
 ## Project Structure
 
 ```
-.
-├── app/                    # Main application code
-│   ├── pages/            # Streamlit pages
-│   ├── services/         # Core services
-│   │   ├── gpt_service.py    # LLM integration (Claude)
-│   │   ├── tts_service.py    # Text-to-speech (gTTS)
-│   │   ├── pdf_service.py    # PDF processing
-│   │   └── generator.py      # Episode generation pipeline
-│   └── utils/           # Helper functions
-├── data/                # Input data storage
-├── output/             # Generated episodes
-└── tests/             # Unit tests
+operation-woohoo/
+├── app/
+│   ├── components/
+│   │   ├── __init__.py
+│   │   └── onboarding.py
+│   ├── utils/
+│   │   ├── __init__.py
+│   │   ├── pdf_processor.py
+│   │   └── profile_manager.py
+│   ├── __init__.py
+│   └── main.py
+├── data/
+│   └── profiles/
+├── requirements.txt
+└── README.md
 ```
 
-## How It Works
+## Current Features
 
-1. **Source Import**: Upload academic sources through:
-   - Zotero integration
-   - PDF document upload
-   - Bibliography files
-2. **Script Generation**: Claude processes the sources into an engaging podcast script
-3. **Audio Generation**: Google TTS converts the script into natural-sounding audio
-4. **Management**: Organize episodes with tags, favorites, and easy export options
+### PDF Processing
+- Automatic section detection
+- Text cleaning and normalization
+- Academic paper structure recognition
+- Preview of content transformation
+
+### User Profiles
+- Personalized interest selection
+- Progress tracking
+- Multi-language support (coming soon)
+- Custom voice preferences (coming soon)
+
+### Content Topics
+The platform supports learning content across multiple domains:
+- Technology & Computing
+- Science & Mathematics
+- Arts & Humanities
+- Design & Architecture
+- Business & Economics
+- Social Sciences
+- Agriculture & Environment
+- Health & Medicine
+
+## Development Roadmap
+
+- [ ] Implement AI content transformation
+- [ ] Add text-to-speech generation
+- [ ] Create interactive episode player
+- [ ] Add content recommendation system
+- [ ] Implement user progress tracking
+- [ ] Add social sharing features
 
 ## Contributing
 
-Feel free to submit issues and enhancement requests!
+We welcome contributions! Please feel free to submit a Pull Request.
 
 ## License
 
-MIT License - feel free to use this project for personal or commercial purposes. 
+This project is licensed under the MIT License - see the LICENSE file for details. 

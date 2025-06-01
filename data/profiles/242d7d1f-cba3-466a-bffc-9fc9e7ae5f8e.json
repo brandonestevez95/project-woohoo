@@ -1,0 +1,15 @@
+{
+  "id": "242d7d1f-cba3-466a-bffc-9fc9e7ae5f8e",
+  "name": "NJ",
+  "interests": [
+    "UX/UI Design",
+    "Interior Design"
+  ],
+  "learning_arcs": [
+    "ai_basics"
+  ],
+  "language": "en",
+  "voice_preference": "enthusiastic",
+  "created_at": "2025-06-01",
+  "episodes": []
+}
