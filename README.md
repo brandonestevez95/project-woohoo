@@ -86,6 +86,14 @@ The platform supports learning content across multiple domains:
 - [ ] Create interactive episode player
 - [ ] Add content recommendation system
 - [ ] Implement user progress tracking
+
+## Screenshots 
+<img width="1501" alt="woohoo-launchscreen" src="https://github.com/user-attachments/assets/84460ea9-25a7-4c9e-bc93-d444736f5ee5" />
+<img width="1508" alt="woohoo-interests" src="https://github.com/user-attachments/assets/ae181d95-feae-476e-b3f1-3a2f077f55ef" />
+<img width="1502" alt="woohoo-inaction" src="https://github.com/user-attachments/assets/807ac653-e0c1-44bf-a162-057eeb6a3048" />
+<img width="1496" alt="woohoo-howitworks" src="https://github.com/user-attachments/assets/dfeab4a9-008e-4694-9aba-cec5b466465c" />
+<img width="1495" alt="woohoo-completedtranscript" src="https://github.com/user-attachments/assets/11fd26c5-e5d1-4c6b-93ee-6d1693360403" />
+
 - [ ] Add social sharing features
 
 ## Contributing
