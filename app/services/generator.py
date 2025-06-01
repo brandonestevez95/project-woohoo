@@ -19,7 +19,6 @@ class Generator:
         title: str,
         tone: str = "journalistic",
         duration_minutes: int = 15,
-        voice_preset: str = "v2/en_speaker_6",
         language: str = "en"
     ) -> Optional[Dict]:
         """Generate a complete podcast episode from sources."""
@@ -40,7 +39,6 @@ class Generator:
             success = self.tts.generate_audio(
                 text=script,
                 output_path=audio_path,
-                voice_preset=voice_preset,
                 language=language
             )
             if not success:
@@ -78,5 +76,28 @@ class Generator:
         """Extract unique tags from sources."""
         tags = set()
         for source in sources:
-            tags.update(source.get("tags", []))
-        return list(tags) 
+            if source.get('type') == 'pdf':
+                # Extract keywords from PDF metadata
+                keywords = source.get('metadata', {}).get('keywords', '')
+                if keywords:
+                    tags.update(keywords.split(','))
+            else:
+                # Handle Zotero and other sources
+                tags.update(source.get("tags", []))
+        return list(tags)
+    
+    def _format_source_for_llm(self, source: Dict) -> str:
+        """Format a source for LLM input."""
+        if source.get('type') == 'pdf':
+            return f"""Source:
+Title: {source['metadata'].get('title', 'Unknown')}
+Author: {source['metadata'].get('author', 'Unknown')}
+Content: {source['text'][:2000]}...  # Truncate long PDFs
+"""
+        else:
+            # Handle Zotero sources
+            return f"""Source:
+Title: {source['data'].get('title', 'Unknown')}
+Authors: {', '.join([author.get('firstName', '') + ' ' + author.get('lastName', '') for author in source['data'].get('creators', [])])}
+Abstract: {source['data'].get('abstractNote', '')}
+""" 

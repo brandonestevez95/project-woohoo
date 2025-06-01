@@ -1,0 +1,16 @@
+[theme]
+primaryColor = "#FF4B4B"  # Vibrant red for primary actions
+backgroundColor = "#FFFFFF"  # Clean white background
+secondaryBackgroundColor = "#F0F2F6"  # Light gray for cards/sections
+textColor = "#262730"  # Dark gray for text
+font = "sans serif"  # Modern, clean font
+
+[browser]
+gatherUsageStats = false  # Disable usage statistics
+
+[server]
+enableCORS = false
+enableXsrfProtection = false
+
+[logger]
+level = "error" 

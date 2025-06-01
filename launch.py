@@ -1,5 +1,20 @@
 import os
 import sys
+import warnings
+
+# Suppress all warnings
+warnings.filterwarnings("ignore")
+os.environ["PYTHONWARNINGS"] = "ignore"
+
+# Disable deprecation warnings
+import logging
+logging.getLogger("py.warnings").setLevel(logging.ERROR)
+
+# Monkey patch warnings.showwarning
+def _dummy_show_warning(*args, **kwargs):
+    pass
+warnings.showwarning = _dummy_show_warning
+
 import subprocess
 from pathlib import Path
 

@@ -1,0 +1,192 @@
+/* Custom styles for Project Woohoo */
+
+/* Card styling */
+.stCard {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin: 1rem 0;
+    background: white;
+    transition: transform 0.2s ease;
+}
+
+.stCard:hover {
+    transform: translateY(-2px);
+}
+
+/* Progress bars */
+.stProgress > div > div {
+    background-color: #FF4B4B;
+    border-radius: 10px;
+}
+
+/* Buttons */
+.stButton > button {
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.stButton > button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Learning path cards */
+.learning-path-card {
+    background: #F8F9FA;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border-left: 4px solid #FF4B4B;
+}
+
+.learning-path-card h3 {
+    color: #1E1E1E;
+    margin-bottom: 0.5rem;
+}
+
+.learning-path-card .description {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.learning-path-card .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.learning-path-card .topic-tag {
+    background: #FFE5E5;
+    color: #FF4B4B;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+}
+
+/* Profile section */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #FF4B4B 0%, #FF8080 100%);
+    border-radius: 10px;
+    color: white;
+}
+
+.profile-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+/* Episode cards */
+.episode-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border: 1px solid #E0E0E0;
+}
+
+.episode-card .title {
+    font-weight: 600;
+    color: #1E1E1E;
+}
+
+.episode-card .meta {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+/* Custom sidebar styling */
+.sidebar .sidebar-content {
+    background: linear-gradient(180deg, #FF4B4B 0%, #FF8080 100%);
+    color: white;
+}
+
+/* Custom metrics */
+.metric-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.metric-card .value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #FF4B4B;
+}
+
+.metric-card .label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+/* Custom tabs */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 1rem;
+}
+
+.stTabs [data-baseweb="tab"] {
+    height: 50px;
+    border-radius: 5px;
+    padding: 0 1rem;
+    font-weight: 500;
+}
+
+/* Custom select boxes */
+.stSelectbox [data-baseweb="select"] {
+    border-radius: 10px;
+}
+
+/* Custom text inputs */
+.stTextInput input {
+    border-radius: 10px;
+}
+
+/* Custom number inputs */
+.stNumberInput input {
+    border-radius: 10px;
+}
+
+/* Custom multiselect */
+.stMultiSelect [data-baseweb="select"] {
+    border-radius: 10px;
+}
+
+/* Custom expander */
+.streamlit-expanderHeader {
+    border-radius: 10px;
+    background: #F8F9FA;
+    border: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom checkbox */
+.stCheckbox {
+    padding: 0.5rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease forwards;
+} 

@@ -4,12 +4,16 @@ An AI-powered tool that transforms academic sources into engaging podcast episod
 
 ## Features
 
-- 📚 Import sources from Zotero libraries, RSS feeds, or bibliography files
+- 📚 Import sources from:
+  - Zotero libraries
+  - PDF documents
+  - Bibliography files (.bib, .csv)
 - 🤖 Generate cohesive podcast scripts using Claude (via Ollama)
-- 🎧 Convert scripts to high-quality audio using Coqui TTS
+- 🎧 Convert scripts to audio using Google Text-to-Speech (gTTS)
 - 🌟 Filter, favorite, and manage your episode library
 - 📝 Export transcripts and audio files
 - 🌐 Everything runs locally - no API keys needed!
+- 📱 Web and desktop versions available
 
 ## Prerequisites
 
@@ -41,39 +45,42 @@ pip install watchdog
 
 ## Usage
 
+### Web Version
 Run the Streamlit app:
 ```bash
 streamlit run app/main.py
 ```
 
-### Available Voices
-
-The TTS system (Coqui XTTS v2) includes 8 high-quality voices:
-- Male, enthusiastic (v2/en_speaker_1)
-- Female, professional (v2/en_speaker_2)
-- Male, deep (v2/en_speaker_3)
-- Female, warm (v2/en_speaker_4)
-- Male, narrative (v2/en_speaker_5)
-- Female, clear (v2/en_speaker_6)
-- Male, authoritative (v2/en_speaker_7)
-- Female, engaging (v2/en_speaker_8)
+### Desktop Version
+Launch the standalone application:
+```bash
+./dist/ProjectWoohoo/ProjectWoohoo  # On Unix/Mac
+# or
+dist\ProjectWoohoo\ProjectWoohoo.exe  # On Windows
+```
 
 ### Supported Languages
-- English
-- Spanish
-- French
-- German
-(More languages available through XTTS v2)
+- English (en)
+- Spanish (es)
+- French (fr)
+- German (de)
+- Italian (it)
+- Portuguese (pt)
+- Russian (ru)
+- Japanese (ja)
+- Korean (ko)
+- Chinese (zh)
 
 ## Project Structure
 
 ```
 .
 ├── app/                    # Main application code
-│   ├── components/        # UI components
+│   ├── pages/            # Streamlit pages
 │   ├── services/         # Core services
 │   │   ├── gpt_service.py    # LLM integration (Claude)
-│   │   ├── tts_service.py    # Text-to-speech (Coqui TTS)
+│   │   ├── tts_service.py    # Text-to-speech (gTTS)
+│   │   ├── pdf_service.py    # PDF processing
 │   │   └── generator.py      # Episode generation pipeline
 │   └── utils/           # Helper functions
 ├── data/                # Input data storage
@@ -83,9 +90,12 @@ The TTS system (Coqui XTTS v2) includes 8 high-quality voices:
 
 ## How It Works
 
-1. **Source Import**: Upload academic sources through Zotero, RSS feeds, or bibliography files
+1. **Source Import**: Upload academic sources through:
+   - Zotero integration
+   - PDF document upload
+   - Bibliography files
 2. **Script Generation**: Claude processes the sources into an engaging podcast script
-3. **Audio Generation**: Coqui TTS converts the script into natural-sounding audio
+3. **Audio Generation**: Google TTS converts the script into natural-sounding audio
 4. **Management**: Organize episodes with tags, favorites, and easy export options
 
 ## Contributing

@@ -13,16 +13,24 @@ class LLMService:
     
     def generate_script(self, sources: List[Dict], tone: str, duration_minutes: int) -> str:
         """Generate a podcast script from the provided sources."""
-        # Prepare the prompt
+        # Format each source
         source_texts = []
-        for i, source in enumerate(sources, 1):
-            source_text = f"Source {i}:\n"
-            source_text += f"Title: {source['title']}\n"
-            source_text += f"Authors: {', '.join(source['authors'])}\n"
-            source_text += f"Abstract: {source['abstract']}\n"
+        for source in sources:
+            if source.get('type') == 'pdf':
+                source_text = f"""PDF Source:
+Title: {source['metadata'].get('title', 'Unknown')}
+Author: {source['metadata'].get('author', 'Unknown')}
+Content: {source['text'][:2000]}...
+"""
+            else:
+                source_text = f"""Zotero Source:
+Title: {source['data'].get('title', 'Untitled')}
+Authors: {', '.join([author.get('firstName', '') + ' ' + author.get('lastName', '') for author in source['data'].get('creators', [])])}
+Abstract: {source['data'].get('abstractNote', '')}
+"""
             source_texts.append(source_text)
         
-        prompt = f"""Create an engaging podcast script based on these academic sources:
+        prompt = f"""Create an engaging podcast script based on these sources:
 
 {'\n\n'.join(source_texts)}
 
