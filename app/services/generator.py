@@ -7,6 +7,9 @@ import tempfile
 
 from app.services.gpt_service import LLMService
 from app.services.tts_service import TTSService
+from app.services.script_generator import ScriptGenerator
+from app.services.prompt_manager import PromptManager
+from app.services.library_manager import LibraryManager
 from app.utils.file_handler import FileHandler
 
 class Generator:
@@ -16,6 +19,9 @@ class Generator:
         self.output_dir.mkdir(exist_ok=True)
         self.llm = LLMService()
         self.tts = TTSService()
+        self.script_generator = ScriptGenerator()
+        self.prompt_manager = PromptManager()
+        self.library_manager = LibraryManager()
         self.file_handler = FileHandler()
     
     def _extract_text_from_sources(self, sources: List[Dict]) -> str:
@@ -30,25 +36,25 @@ class Generator:
                 # TODO: Add support for full-text content from Zotero
         return "\n\n".join(texts)
         
-    def _generate_script(self, content: str, title: str, tone: str, duration_minutes: int, language: str) -> Dict:
-        """Generate a podcast script from the content."""
-        # TODO: Implement LLM-based script generation
-        # For now, return a simple template
+    def _generate_script(self, content: str, title: str, tone: str, arc: str, duration_minutes: int, language: str) -> Dict:
+        """Generate a podcast script from the content using the LLM."""
+        prompt = self.prompt_manager.build_prompt(arc, tone)
+        script_text = self.script_generator.generate(content, prompt)
+        summary = self.llm.generate_summary(script_text)
         return {
             "title": title,
-            "summary": f"A {duration_minutes}-minute episode about {title}",
-            "script": f"Welcome to this episode about {title}.\n\nHere's what we found in our sources:\n\n{content[:500]}...",
+            "summary": summary,
+            "script": script_text,
             "language": language,
-            "tone": tone
+            "tone": tone,
+            "arc": arc,
         }
         
     def _generate_audio(self, script: Dict) -> str:
-        """Generate audio from the script."""
-        # TODO: Implement text-to-speech
-        # For now, create a dummy audio file
-        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.mp3')
-        temp_file.close()
-        return temp_file.name
+        """Generate audio from the script using TTS."""
+        audio_path = self.output_dir / f"{script['title'].lower().replace(' ', '_')}.mp3"
+        success = self.tts.generate_audio(script["script"], str(audio_path))
+        return str(audio_path) if success else ""
         
     def generate_episode(
         self,
@@ -56,30 +62,39 @@ class Generator:
         title: str,
         tone: str = "professional",
         duration_minutes: int = 15,
-        language: str = "en"
+        language: str = "en",
+        arc: str = "Civic Storyteller"
     ) -> Optional[Dict]:
         """Generate a podcast episode from the given sources."""
         try:
             # Extract content from sources
             content = self._extract_text_from_sources(sources)
-            
+
             # Generate script
-            script = self._generate_script(content, title, tone, duration_minutes, language)
+            script = self._generate_script(content, title, tone, arc, duration_minutes, language)
             
             # Generate audio
             audio_path = self._generate_audio(script)
-            
+
             # Save transcript
             transcript_path = self.output_dir / f"{title.lower().replace(' ', '_')}_transcript.txt"
             with open(transcript_path, 'w') as f:
                 f.write(script['script'])
-            
-            return {
+
+            episode_info = {
                 "title": script["title"],
                 "summary": script["summary"],
                 "audio_path": audio_path,
-                "transcript_path": str(transcript_path)
+                "transcript_path": str(transcript_path),
+                "tags": self._extract_tags(sources),
+                "arc": arc,
+                "tone": tone,
+                "date": time.strftime("%Y-%m-%d"),
             }
+
+            self.library_manager.add_episode(episode_info)
+
+            return episode_info
         except Exception as e:
             print(f"Error generating episode: {str(e)}")
             return None
