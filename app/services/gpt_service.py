@@ -30,19 +30,19 @@ Abstract: {source['data'].get('abstractNote', '')}
 """
             source_texts.append(source_text)
         
-        prompt = f"""Create an engaging podcast script based on these sources:
-
-{'\n\n'.join(source_texts)}
-
-Style guidelines:
-- Tone: {tone}
-- Target duration: {duration_minutes} minutes
-- Format: Include introduction, main discussion, and conclusion
-- Make complex topics accessible while maintaining academic integrity
-- Use conversational language and clear transitions
-- Include brief source citations when discussing specific findings
-
-Please structure the output as a complete podcast script."""
+        sources_text = "\n\n".join(source_texts)
+        prompt = (
+            "Create an engaging podcast script based on these sources:\n\n"
+            f"{sources_text}\n\n"
+            "Style guidelines:\n"
+            f"- Tone: {tone}\n"
+            f"- Target duration: {duration_minutes} minutes\n"
+            "- Format: Include introduction, main discussion, and conclusion\n"
+            "- Make complex topics accessible while maintaining academic integrity\n"
+            "- Use conversational language and clear transitions\n"
+            "- Include brief source citations when discussing specific findings\n\n"
+            "Please structure the output as a complete podcast script."
+        )
 
         try:
             response = ollama.chat(model='claude', messages=[

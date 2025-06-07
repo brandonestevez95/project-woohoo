@@ -128,4 +128,48 @@ class ProfileManager:
     @property
     def available_interests(self) -> List[str]:
         """Get list of available interests."""
-        return self._interests 
+        return self._interests
+
+    @property
+    def available_learning_arcs(self) -> List[Dict]:
+        """Return predefined learning arcs for profile selection."""
+        return [
+            {
+                "id": "ai_basics",
+                "name": "AI Basics",
+                "description": "Introduction to core concepts of artificial intelligence",
+                "difficulty": "Beginner",
+                "topics": ["history of AI", "machine learning overview", "applications"],
+            },
+            {
+                "id": "stem",
+                "name": "STEM Foundations",
+                "description": "Fundamental science, technology, engineering and math topics",
+                "difficulty": "Beginner",
+                "topics": ["physics", "chemistry", "engineering principles"],
+            },
+            {
+                "id": "future",
+                "name": "Future Technology",
+                "description": "Emerging trends and technologies shaping tomorrow",
+                "difficulty": "Intermediate",
+                "topics": ["AI trends", "space exploration", "biotechnology"],
+            },
+            {
+                "id": "sustainability",
+                "name": "Sustainability",
+                "description": "Environmental responsibility and sustainable practices",
+                "difficulty": "Intermediate",
+                "topics": ["renewable energy", "climate change", "green tech"],
+            },
+        ]
+
+    def update_profile(self, profile_id: str, updates: Dict) -> bool:
+        """Update an existing profile with provided values."""
+        profile = self.get_profile(profile_id)
+        if not profile:
+            return False
+        profile.update(updates)
+        profile["last_updated"] = datetime.now().strftime("%Y-%m-%d")
+        self.profiles[profile_id] = profile
+        return self._save_profile(profile_id, profile)
